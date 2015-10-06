@@ -1,0 +1,28 @@
+{
+    "name" : "ekyna/payum-sips",
+    "description" : "Atos Sips Payum gateway",
+    "type" : "component",
+    "authors" : [{
+            "name" : "Etienne Dauvergne",
+            "homepage" : "http://ekyna.com"
+        }
+    ],
+    "homepage" : "https://github.com/ekyna/Payum/Sips",
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+        "php" : ">=5.4",
+        "payum/payum": "0.15.*"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Ekyna\\Component\\Payum\\Sips\\" : ""
+        }
+    },
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "0.15.x-dev"
+        }
+    }
+}
