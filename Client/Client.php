@@ -3,7 +3,9 @@
 namespace Ekyna\Component\Payum\Sips\Client;
 
 use Ekyna\Component\Payum\Sips\Exception\PaymentRequestException;
+use Payum\Core\Exception\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Process\Process;
 
 /**
@@ -14,14 +16,15 @@ use Symfony\Component\Process\Process;
 class Client
 {
     /**
+     * @var array
+     */
+    protected $config;
+
+    /**
      * @var LoggerInterface
      */
     protected $logger;
 
-    /**
-     * @var array
-     */
-    protected $config;
 
     /**
      * Constructor
@@ -31,8 +34,68 @@ class Client
      */
     public function __construct(array $config, LoggerInterface $logger = null)
     {
-        $this->logger = $logger;
-        $this->config = $config;
+        $this->config = array_replace(array(
+            'merchant_id'      => null,
+            'merchant_country' => null,
+            'pathfile'         => null,
+            'request_bin'      => null,
+            'response_bin'     => null,
+            'debug'            => false,
+        ), $config);
+
+        if (empty($this->config['merchant_id'])) {
+            throw new InvalidArgumentException('The merchant_id option must be set.');
+        }
+        if (empty($this->config['merchant_country'])) {
+            throw new InvalidArgumentException('The merchant_country option must be set.');
+        }
+        if (empty($this->config['pathfile'])) {
+            throw new InvalidArgumentException('The pathfile option must be set.');
+        }
+        if (empty($this->config['request_bin'])) {
+            throw new InvalidArgumentException('The request_bin option must be set.');
+        }
+        if (empty($this->config['response_bin'])) {
+            throw new InvalidArgumentException('The response_bin option must be set.');
+        }
+        if (!is_bool($this->config['debug'])) {
+            throw new InvalidArgumentException('The boolean debug option must be set.');
+        }
+
+        $this->logger = $logger ?: new NullLogger();
+    }
+
+    /**
+     * @param  array  $config
+     * @return string
+     */
+    public function callRequest($config)
+    {
+        $args = array_replace(array(
+            'merchant_id'      => $this->config['merchant_id'],
+            'merchant_country' => $this->config['merchant_country'],
+            'pathfile'         => $this->config['pathfile'],
+        ), $config);
+
+        $output = $this->run($this->config['request_bin'], $args);
+
+        return $this->handleRequestOutput($output);
+    }
+
+    /**
+     * @param string $data
+     * @return array
+     */
+    public function callResponse($data)
+    {
+        $args = array(
+            'message' => $data,
+            'pathfile' => $this->config['pathfile'],
+        );
+
+        $output = $this->run($this->config['response_bin'], $args);
+
+        return $this->handleResponseOutput($output);
     }
 
     /**
@@ -40,7 +103,7 @@ class Client
      * @param  array  $args
      * @return string
      */
-    public function run($bin, $args)
+    protected function run($bin, $args)
     {
         if (!is_file($bin)) {
             throw new \InvalidArgumentException(sprintf('Binary %s not found', $bin));
@@ -57,6 +120,29 @@ class Client
         $this->logger->debug(sprintf('SIPS Request output: %s', $process->getOutput()));
 
         return $process->getOutput();
+    }
+
+    /**
+     * @param  array  $args
+     * @return string
+     */
+    protected function arrayToArgsString($args)
+    {
+        if (is_string($args)) {
+            return $args;
+        }
+
+        $str = '';
+        foreach ($args as $key => $val) {
+            if ($key == 'step') {
+                continue;
+            }
+            if (is_numeric($val) or $val) {
+                $str .= sprintf('%s=%s ', $key, escapeshellarg($val));
+            }
+        }
+
+        return trim($str);
     }
 
     /**
@@ -82,51 +168,11 @@ class Client
     }
 
     /**
-     * @param  array  $args
-     * @return string
-     */
-    protected function arrayToArgsString($args)
-    {
-        if (is_string($args)) {
-            return $args;
-        }
-
-        $str = '';
-        foreach ($args as $key => $val) {
-            if (is_numeric($val) or $val) {
-                $str .= sprintf('%s=%s ', $key, escapeshellarg($val));
-            }
-        }
-
-        return trim($str);
-    }
-
-    /**
-     * @param  array  $config
-     * @return string
-     */
-    public function request($config)
-    {
-        $args = array_merge($this->config, $config);
-
-        $output = $this->run($this->binaries['request_bin'], $this->arrayToArgsString($args));
-
-        return $this->handleRequestOutput($output);
-    }
-
-    /**
-     * @param  string $data the raw response
+     * @param  string $output the raw response
      * @return array
      */
-    public function handleResponseData($data)
+    protected function handleResponseOutput($output)
     {
-        $args = array(
-            'message' => $data,
-            'pathfile' => $this->config['pathfile'],
-        );
-
-        $output = $this->run($this->binaries['response_bin'], $this->arrayToArgsString($args));
-
         list(
             $result['code'],
             $result['error'],

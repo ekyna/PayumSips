@@ -2,19 +2,20 @@
 
 namespace Ekyna\Component\Payum\Sips\Action;
 
-use Payum\Core\Action\ActionInterface;
+use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\Exception\RuntimeException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
-use Payum\ISO4217\ISO4217;
+use Payum\Core\Request\GetCurrency;
 
 /**
  * Class ConvertPaymentAction
  * @package Ekyna\Component\Payum\Sips\Action
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class ConvertPaymentAction implements ActionInterface
+class ConvertPaymentAction extends GatewayAwareAction
 {
     /**
      * {@inheritDoc}
@@ -28,19 +29,32 @@ class ConvertPaymentAction implements ActionInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getSource();
 
-        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+        $model = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details['order_id'] = $payment->getNumber();
-        //$details['DESCRIPTION'] = $payment->getDescription();
+        //$model['DESCRIPTION'] = $payment->getDescription();
+        if (false == $model['amount']) {
+            $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
+            if (2 < $currency->exp) {
+                throw new RuntimeException('Unexpected currency exp.');
+            }
+            $divisor = pow(10, 2 - $currency->exp);
 
-        $details['amount'] = $payment->getTotalAmount() * 100;
-        $iso = new ISO4217();
-        $details['currency_code'] = $iso->findByAlpha3($payment->getCurrencyCode());
+            $model['currency_code'] = $currency->numeric;
+            $model['amount'] = abs($payment->getTotalAmount() / $divisor);
+        }
 
-        $details['customer_id'] = $payment->getClientId();
-        $details['customer_email'] = $payment->getClientEmail();
+        if (false == $model['order_id']) {
+            $model['order_id'] = $payment->getNumber();
+        }
 
-        $request->setResult((array) $details);
+        if (false == $model['customer_id']) {
+            $model['customer_id'] = $payment->getClientId();
+        }
+        if (false == $model['customer_email']) {
+            $model['customer_email'] = $payment->getClientEmail();
+        }
+
+        $request->setResult((array) $model);
     }
 
     /**

@@ -2,23 +2,24 @@
 
 namespace Ekyna\Component\Payum\Sips\Action\Api;
 
-use Ekyna\Component\Payum\Sips\Request\AuthorizeForm;
+use Ekyna\Component\Payum\Sips\Request\CallRequest;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 
 /**
- * Class RequestFormAction
+ * Class CallRequestAction
  * @package Ekyna\Component\Payum\Sips\Action\Api
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class AuthorizeFormAction extends BaseApiAction
+class CallRequestAction extends BaseApiAction
 {
     /**
      * @var string
      */
     protected $templateName;
+
 
     /**
      * @param string|null $templateName
@@ -35,24 +36,24 @@ class AuthorizeFormAction extends BaseApiAction
      */
     public function execute($request)
     {
-        /** @var $request AuthorizeForm */
+        /** @var $request CallRequest */
         RequestNotSupportedException::assertSupports($this, $request);
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
-        // TODO check data
-        /*if (false == $model['TOKEN']) {
-            throw new LogicException('The TOKEN must be set by SetExpressCheckout request but it was not executed or failed. Review payment details model for more information');
-        }*/
 
-        if (!isset($model['response_code'])) {
-            $renderTemplate = new RenderTemplate($this->templateName, array(
-                'form' => $this->api->getAuthorizeForm($model),
-            ));
-
-            $this->gateway->execute($renderTemplate);
-
-            throw new HttpResponse($renderTemplate->getResult());
+        if ($model['transaction_id']) {
+            return;
         }
+
+        $model['transaction_id'] = date('His'); // TODO store and increment in a file
+
+        $renderTemplate = new RenderTemplate($this->templateName, array(
+            'form' => $this->api->request($model->getArrayCopy()),
+        ));
+
+        $this->gateway->execute($renderTemplate);
+
+        throw new HttpResponse($renderTemplate->getResult());
     }
 
     /**
@@ -61,7 +62,7 @@ class AuthorizeFormAction extends BaseApiAction
     public function supports($request)
     {
         return
-            $request instanceof AuthorizeForm &&
+            $request instanceof CallRequest &&
             $request->getModel() instanceof \ArrayAccess
         ;
     }

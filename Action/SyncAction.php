@@ -1,41 +1,38 @@
 <?php
 
 namespace Ekyna\Component\Payum\Sips\Action;
-
+use Ekyna\Component\Payum\Sips\Request\CallResponse;
 use Payum\Core\Action\GatewayAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
 /**
- * Class NotifyAction
+ * Class SyncAction
  * @package Ekyna\Component\Payum\Sips\Action
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class NotifyAction extends GatewayAwareAction
+class SyncAction extends GatewayAwareAction
 {
     /**
-     * {@inheritDoc}
-     *
-     * @param Notify $request
+     * {@inheritdoc}
      */
     public function execute($request)
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $details = ArrayObject::ensureArrayObject($request->getModel());
+        $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute(new Sync($details));
+        $this->gateway->execute(new CallResponse($model));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request)
     {
         return
-            $request instanceof Notify &&
+            $request instanceof Sync &&
             $request->getModel() instanceof \ArrayAccess
         ;
     }

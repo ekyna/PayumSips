@@ -20,13 +20,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         ;
 
-        $bin = array('request_bin' => '', 'response_bin' => '');
-        $config = array('pathfile' => '');
+        $config = array(
+            'merchant_id' => 'anId',
+            'merchant_country' => 'aCountry',
+            'pathfile' => 'aPath',
+            'request_bin' => 'aPath',
+            'response_bin' => 'aPath'
+        );
 
         $this->client = $this->getMock(
             'Ekyna\Component\Payum\Sips\Client\Client',
             array('run'),
-            array($logger, $bin, $config)
+            array($config, $logger)
         );
     }
 
@@ -43,7 +48,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'SIPS Request failed with the following error: wrong card number'
         );
 
-        $result = $this->client->request(array('amount' => 10000));
+        $this->client->callRequest(array('amount' => 10000));
     }
 
     public function testRequestInvalid()
@@ -59,7 +64,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'SIPS Request failed. Output: !!!!'
         );
 
-        $result = $this->client->request(array('amount' => 10000));
+        $result = $this->client->callRequest(array('amount' => 10000));
     }
 
     public function testRequestSuccess()
@@ -71,7 +76,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ;
         $expected = '<div>form</div>';
 
-        $result = $this->client->request(array('amount' => 10000));
+        $result = $this->client->callRequest(array('amount' => 10000));
 
         $this->assertEquals($expected, $result);
     }
@@ -128,7 +133,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'score_profile' => '41',
         );
 
-        $result = $this->client->handleResponseData('message=xxx');
+        $result = $this->client->callResponse('message=xxx');
 
         $this->assertEquals($expected, $result);
     }

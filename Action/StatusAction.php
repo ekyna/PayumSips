@@ -23,27 +23,30 @@ class StatusAction implements ActionInterface
 
         /** @var GetStatusInterface $request */
 
-        $details = ArrayObject::ensureArrayObject($request->getModel());
+        $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (false == isset($details['bank_response_code'])) {
+        if (false == $model['transaction_id']) {
             $request->markNew();
-
             return;
         }
 
-        if ('00' === $details['bank_response_code']) {
-            $request->markCaptured();
-
-            return;
-        }
-
-        if (0 < intval($details['bank_response_code'])) {
+        if (false != $responseCode = $model['response_code']) {
+            // Success
+            if ('00' === $responseCode) {
+                $request->markCaptured();
+                return;
+            }
+            // Cancelled by user
+            if ('17' === $responseCode) {
+                $request->markCanceled();
+                return;
+            }
+            // Failure
             $request->markFailed();
-
             return;
         }
 
-        $request->markUnknown();
+        $request->markPending();
     }
 
     /**

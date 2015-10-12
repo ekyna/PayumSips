@@ -12,6 +12,11 @@ use Ekyna\Component\Payum\Sips\Client\Client;
 class Api
 {
     /**
+     * @var array
+     */
+    private $config;
+
+    /**
      * @var Client
      */
     private $client;
@@ -19,26 +24,37 @@ class Api
     /**
      * Constructor.
      *
-     * @param array $config
+     * @param array  $config
+     * @param Client $client
      */
-    public function __construct(array $config)
+    public function __construct(array $config, Client $client)
     {
-        $this->client = new Client($config);
+        $this->config = $config;
+        $this->client = $client;
     }
 
     /**
-     * Requests the authorize form.
+     * Runs the request binary with given data
+     * and returns the generated form.
      *
-     * @param \ArrayObject $data
+     * @param array $data
      * @return string
      */
-    public function getAuthorizeForm(\ArrayObject $data)
+    public function request(array $data)
     {
+        $data = array_replace($this->config, $data);
 
+        return $this->client->callRequest($data);
     }
 
-    public function doResponse()
+    /**
+     * Runs the response binary and returns the new data.
+     *
+     * @param string $hash
+     * @return array
+     */
+    public function response($hash)
     {
-
+        return $this->client->callResponse($hash);
     }
 }

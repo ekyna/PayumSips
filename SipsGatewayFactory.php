@@ -2,11 +2,14 @@
 
 namespace Ekyna\Component\Payum\Sips;
 
-use Ekyna\Component\Payum\Sips\Action\Api\AuthorizeFormAction;
+use Ekyna\Component\Payum\Sips\Action\Api\CallRequestAction;
+use Ekyna\Component\Payum\Sips\Action\Api\CallResponseAction;
 use Ekyna\Component\Payum\Sips\Action\CaptureAction;
 use Ekyna\Component\Payum\Sips\Action\ConvertPaymentAction;
 use Ekyna\Component\Payum\Sips\Action\StatusAction;
+use Ekyna\Component\Payum\Sips\Action\SyncAction;
 use Ekyna\Component\Payum\Sips\Api\Api;
+use Ekyna\Component\Payum\Sips\Client\Client;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory as CoreGatewayFactory;
 use Payum\Core\GatewayFactoryInterface;
@@ -57,46 +60,61 @@ class SipsGatewayFactory implements GatewayFactoryInterface
         $config->defaults($this->coreGatewayFactory->createConfig((array) $config));
 
         $config->defaults(array(
-            'payum.factory_name' => 'Atos SIPS',
+            'payum.factory_name'  => 'Atos SIPS',
             'payum.factory_title' => 'Atos SIPS',
 
-            'payum.action.capture' => new CaptureAction(),
-            'payum.action.status' => new StatusAction(),
-            'payum.action.authorize_form' => new AuthorizeFormAction($config['payum.template.authorize']),
+            'payum.action.capture'         => new CaptureAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
+            'payum.action.call_request'    => new CallRequestAction($config['payum.template.authorize']),
+            'payum.action.call_response'   => new CallResponseAction(),
+            'payum.action.sync'            => new SyncAction(),
+            'payum.action.status'          => new StatusAction(),
         ));
 
         if (false == $config['payum.api']) {
-
-            $apiDefault = isset($config['payum.api_default_config']) ? $config['payum.api_default_config'] : array();
-
             $config['payum.default_options'] = array(
-                'api' => array_replace(array(
-                    'merchant_id'      => null,
-                    'merchant_country' => 'fr',
-                    'pathfile'         => null,
-                    'request_bin'      => null,
-                    'response_bin'     => null,
-                    'debug'            => false,
-                ), $apiDefault),
-                'default_language' => 'fr',
+                'language' => 'fr',
             );
+
             $config->defaults($config['payum.default_options']);
 
             $config['payum.required_options'] = array(
-                'api',
-                'default_language',
+                'language',
             );
 
             $config['payum.api'] = function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
-                // TODO api validation
+                $apiConfig = array(
+                    'language' => $config['language'],
+                );
 
-                $apiConfig = $config['api'];
-                $apiConfig['default_language'] = $config['default_language'];
+                $client = $config['payum.client'] instanceof \Closure
+                    ? $config['payum.client']($config)
+                    : $config['payum.client'];
 
-                return new Api($apiConfig);
+                return new Api($apiConfig, $client);
+            };
+        }
+
+        if (false == $config['payum.client']) {
+            $config['payum.default_options']['client'] = array(
+                'merchant_id' => null,
+                'merchant_country' => 'fr',
+                'pathfile' => null,
+                'request_bin' => null,
+                'response_bin' => null,
+                'debug' => false,
+            );
+
+            $config->defaults($config['payum.default_options']);
+
+            $config['payum.required_options'][] = 'client';
+
+            $config['payum.client'] = function (ArrayObject $config) {
+                $config->validateNotEmpty($config['payum.required_options']);
+
+                new Client($config['client']);
             };
         }
 
