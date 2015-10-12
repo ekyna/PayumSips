@@ -40,7 +40,6 @@ class Client
             'pathfile'         => null,
             'request_bin'      => null,
             'response_bin'     => null,
-            'debug'            => false,
         ), $config);
 
         if (empty($this->config['merchant_id'])) {
@@ -57,9 +56,6 @@ class Client
         }
         if (empty($this->config['response_bin'])) {
             throw new InvalidArgumentException('The response_bin option must be set.');
-        }
-        if (!is_bool($this->config['debug'])) {
-            throw new InvalidArgumentException('The boolean debug option must be set.');
         }
 
         $this->logger = $logger ?: new NullLogger();

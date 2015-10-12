@@ -99,12 +99,11 @@ class SipsGatewayFactory implements GatewayFactoryInterface
 
         if (false == $config['payum.client']) {
             $config['payum.default_options']['client'] = array(
-                'merchant_id' => null,
+                'merchant_id'      => null,
                 'merchant_country' => 'fr',
-                'pathfile' => null,
-                'request_bin' => null,
-                'response_bin' => null,
-                'debug' => false,
+                'pathfile'         => null,
+                'request_bin'      => null,
+                'response_bin'     => null,
             );
 
             $config->defaults($config['payum.default_options']);
