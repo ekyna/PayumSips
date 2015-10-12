@@ -21,10 +21,5 @@
         "psr-4" : {
             "Ekyna\\Component\\Payum\\Sips\\" : ""
         }
-    },
-    "extra" : {
-        "branch-alias" : {
-            "dev-master" : "0.15.x-dev"
-        }
     }
 }
