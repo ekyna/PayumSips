@@ -110,7 +110,7 @@ class Client
 
         if (!$process->isSuccessful()) {
             $this->logger->critical($process->getErrorOutput());
-            throw new \RuntimeException($process->getErrorOutput());
+            throw new \RuntimeException($process->getOutput().$process->getErrorOutput());
         }
 
         $this->logger->debug(sprintf('SIPS Request output: %s', $process->getOutput()));

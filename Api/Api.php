@@ -21,6 +21,7 @@ class Api
      */
     private $client;
 
+
     /**
      * Constructor.
      *
@@ -29,7 +30,10 @@ class Api
      */
     public function __construct(array $config, Client $client)
     {
-        $this->config = $config;
+        $this->config = array_filter($config, function ($value) {
+            return null !== $value;
+        });
+
         $this->client = $client;
     }
 
