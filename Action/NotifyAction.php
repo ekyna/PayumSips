@@ -2,7 +2,7 @@
 
 namespace Ekyna\Component\Payum\Sips\Action;
 
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Notify;
@@ -13,7 +13,7 @@ use Payum\Core\Request\Sync;
  * @package Ekyna\Component\Payum\Sips\Action
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class NotifyAction extends GatewayAwareAction
+class NotifyAction extends PaymentAwareAction
 {
     /**
      * {@inheritDoc}
@@ -26,7 +26,7 @@ class NotifyAction extends GatewayAwareAction
 
         $details = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute(new Sync($details));
+        $this->payment->execute(new Sync($details));
     }
 
     /**

@@ -2,20 +2,19 @@
 
 namespace Ekyna\Component\Payum\Sips\Action;
 
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
-use Payum\Core\Request\GetCurrency;
 
 /**
  * Class ConvertPaymentAction
  * @package Ekyna\Component\Payum\Sips\Action
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class ConvertPaymentAction extends GatewayAwareAction
+class ConvertPaymentAction extends PaymentAwareAction
 {
     /**
      * {@inheritDoc}
@@ -33,14 +32,10 @@ class ConvertPaymentAction extends GatewayAwareAction
 
         //$model['DESCRIPTION'] = $payment->getDescription();
         if (false == $model['amount']) {
-            $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
-            if (2 < $currency->exp) {
-                throw new RuntimeException('Unexpected currency exp.');
-            }
-            $divisor = pow(10, 2 - $currency->exp);
-
-            $model['currency_code'] = $currency->numeric;
-            $model['amount'] = abs($payment->getTotalAmount() / $divisor);
+            // TODO Check
+            $model['currency_code'] = '978';
+            // TODO Check
+            $model['amount'] = abs($payment->getTotalAmount() / 100);
         }
 
         if (false == $model['order_id']) {

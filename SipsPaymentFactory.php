@@ -11,20 +11,20 @@ use Ekyna\Component\Payum\Sips\Action\SyncAction;
 use Ekyna\Component\Payum\Sips\Api\Api;
 use Ekyna\Component\Payum\Sips\Client\Client;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\GatewayFactory as CoreGatewayFactory;
-use Payum\Core\GatewayFactoryInterface;
+use Payum\Core\PaymentFactory as CorePaymentFactory;
+use Payum\Core\PaymentFactoryInterface;
 
 /**
- * Class SipsGatewayFactory
+ * Class SipsPaymentFactory
  * @package Ekyna\Component\Payum\Sips
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class SipsGatewayFactory implements GatewayFactoryInterface
+class SipsPaymentFactory implements PaymentFactoryInterface
 {
     /**
-     * @var GatewayFactoryInterface
+     * @var PaymentFactoryInterface
      */
-    protected $coreGatewayFactory;
+    protected $corePaymentFactory;
 
     /**
      * @var array
@@ -34,11 +34,11 @@ class SipsGatewayFactory implements GatewayFactoryInterface
 
     /**
      * @param array $defaultConfig
-     * @param GatewayFactoryInterface $coreGatewayFactory
+     * @param PaymentFactoryInterface $corePaymentFactory
      */
-    public function __construct(array $defaultConfig = array(), GatewayFactoryInterface $coreGatewayFactory = null)
+    public function __construct(array $defaultConfig = array(), PaymentFactoryInterface $corePaymentFactory = null)
     {
-        $this->coreGatewayFactory = $coreGatewayFactory ?: new CoreGatewayFactory();
+        $this->corePaymentFactory = $corePaymentFactory ?: new CorePaymentFactory();
         $this->defaultConfig = $defaultConfig;
     }
 
@@ -47,7 +47,7 @@ class SipsGatewayFactory implements GatewayFactoryInterface
      */
     public function create(array $config = array())
     {
-        return $this->coreGatewayFactory->create($this->createConfig($config));
+        return $this->corePaymentFactory->create($this->createConfig($config));
     }
 
     /**
@@ -57,7 +57,7 @@ class SipsGatewayFactory implements GatewayFactoryInterface
     {
         $config = ArrayObject::ensureArrayObject($config);
         $config->defaults($this->defaultConfig);
-        $config->defaults($this->coreGatewayFactory->createConfig((array) $config));
+        $config->defaults($this->corePaymentFactory->createConfig((array) $config));
 
         $template = false != $config['payum.template.capture']
             ? $config['payum.template.capture']
@@ -68,7 +68,7 @@ class SipsGatewayFactory implements GatewayFactoryInterface
             : array();
 
         $config->defaults(array(
-            'payum.factory_name'  => 'Atos SIPS',
+            'payum.factory_name'  => 'atos_sips',
             'payum.factory_title' => 'Atos SIPS',
 
             'payum.action.capture'         => new CaptureAction(),

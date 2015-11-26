@@ -51,7 +51,7 @@ class CallRequestAction extends BaseApiAction
             'form' => $this->api->request($model->getArrayCopy()),
         ));
 
-        $this->gateway->execute($renderTemplate);
+        $this->payment->execute($renderTemplate);
 
         throw new HttpResponse($renderTemplate->getResult());
     }

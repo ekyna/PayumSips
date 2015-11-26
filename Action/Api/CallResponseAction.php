@@ -24,7 +24,7 @@ class CallResponseAction extends BaseApiAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute($httpRequest = new GetHttpRequest());
+        $this->payment->execute($httpRequest = new GetHttpRequest());
         if (isset($httpRequest->request['DATA'])) {
             $data = $this->api->response($httpRequest->request['DATA']);
 

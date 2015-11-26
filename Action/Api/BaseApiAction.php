@@ -3,7 +3,7 @@
 namespace Ekyna\Component\Payum\Sips\Action\Api;
 
 use Ekyna\Component\Payum\Sips\Api\Api;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\UnsupportedApiException;
 
@@ -12,7 +12,7 @@ use Payum\Core\Exception\UnsupportedApiException;
  * @package Ekyna\Component\Payum\Sips\Action\Api
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-abstract class BaseApiAction extends GatewayAwareAction implements ApiAwareInterface
+abstract class BaseApiAction extends PaymentAwareAction implements ApiAwareInterface
 {
     /**
      * @var Api

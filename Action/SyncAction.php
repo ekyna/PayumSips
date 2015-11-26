@@ -1,8 +1,9 @@
 <?php
 
 namespace Ekyna\Component\Payum\Sips\Action;
+
 use Ekyna\Component\Payum\Sips\Request\CallResponse;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Sync;
@@ -12,7 +13,7 @@ use Payum\Core\Request\Sync;
  * @package Ekyna\Component\Payum\Sips\Action
  * @author Étienne Dauvergne <contact@ekyna.com>
  */
-class SyncAction extends GatewayAwareAction
+class SyncAction extends PaymentAwareAction
 {
     /**
      * {@inheritdoc}
@@ -23,7 +24,7 @@ class SyncAction extends GatewayAwareAction
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $this->gateway->execute(new CallResponse($model));
+        $this->payment->execute(new CallResponse($model));
     }
 
     /**
