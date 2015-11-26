@@ -5,7 +5,6 @@ namespace Ekyna\Component\Payum\Sips\Action;
 use Payum\Core\Action\PaymentAwareAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\Exception\RuntimeException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
 

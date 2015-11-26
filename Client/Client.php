@@ -73,6 +73,9 @@ class Client
             'pathfile'         => $this->config['pathfile'],
         ), $config);
 
+        // TODO move into Api ?
+        $args = array_intersect_key($args, array_flip($this->getRequestAllowedKeys()));
+
         $output = $this->run($this->config['request_bin'], $args);
 
         return $this->handleRequestOutput($output);
@@ -214,5 +217,64 @@ class Client
         ) = array_merge(explode('!', trim($output, '!')), array_fill(0, 40, ''));
 
         return $result;
+    }
+
+    private function getRequestAllowedKeys()
+    {
+        return array(
+            // Required
+            'merchant_id',
+            'merchant_country',
+            'amount',
+            'currency_code',
+            'pathfile',
+
+            // Optional
+            'transaction_id',
+            'normal_return_url',
+            'cancel_return_url',
+            'automatic_response_url',
+            'language',
+            'payment_means',
+            'header_flag',
+            'capture_day',
+            'capture_mode',
+            'bgcolor',
+            'block_align',
+            'block_order',
+            'textcolor',
+            'receipt_complement',
+            'caddie',
+            'customer_id',
+            'customer_email',
+            'customer_ip_address',
+            'data',
+            'return_context',
+            'target',
+            'order_id',
+            'customer_title',
+            'customer_name',
+            'customer_firstname',
+            'customer_birthdate',
+            'customer_phone',
+            'customer_mobile_phone',
+            'customer_nationality_country',
+            'customer_birth_zipcode',
+            'customer_birth_city',
+            'home_city',
+            'home_streetnumber',
+            'home_street',
+            'home_zipcode',
+
+            // Pre-prod only
+            'normal_return_logo',
+            'cancel_return_logo',
+            'submit_logo',
+            'logo_id',
+            'logo_id2',
+            'advert',
+            'background_id',
+            'templatefile',
+        );
     }
 }
