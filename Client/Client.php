@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 /**
  * Class Client
  * @package Ekyna\Component\Payum\Sips\Client
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class Client
 {
@@ -34,13 +34,13 @@ class Client
      */
     public function __construct(array $config, LoggerInterface $logger = null)
     {
-        $this->config = array_replace(array(
+        $this->config = array_replace([
             'merchant_id'      => null,
             'merchant_country' => null,
             'pathfile'         => null,
             'request_bin'      => null,
             'response_bin'     => null,
-        ), $config);
+        ], $config);
 
         if (empty($this->config['merchant_id'])) {
             throw new InvalidArgumentException('The merchant_id option must be set.');
@@ -62,16 +62,17 @@ class Client
     }
 
     /**
-     * @param  array  $config
+     * @param  array $config
+     *
      * @return string
      */
     public function callRequest($config)
     {
-        $args = array_replace(array(
+        $args = array_replace([
             'merchant_id'      => $this->config['merchant_id'],
             'merchant_country' => $this->config['merchant_country'],
             'pathfile'         => $this->config['pathfile'],
-        ), $config);
+        ], $config);
 
         $output = $this->run($this->config['request_bin'], $args);
 
@@ -80,14 +81,15 @@ class Client
 
     /**
      * @param string $data
+     *
      * @return array
      */
     public function callResponse($data)
     {
-        $args = array(
-            'message' => $data,
+        $args = [
+            'message'  => $data,
             'pathfile' => $this->config['pathfile'],
-        );
+        ];
 
         $output = $this->run($this->config['response_bin'], $args);
 
@@ -97,6 +99,7 @@ class Client
     /**
      * @param  string $bin
      * @param  array  $args
+     *
      * @return string
      */
     protected function run($bin, $args)
@@ -110,7 +113,7 @@ class Client
 
         if (!$process->isSuccessful()) {
             $this->logger->critical($process->getErrorOutput());
-            throw new \RuntimeException($process->getOutput().$process->getErrorOutput());
+            throw new \RuntimeException($process->getOutput() . $process->getErrorOutput());
         }
 
         $this->logger->debug(sprintf('SIPS Request output: %s', $process->getOutput()));
@@ -119,7 +122,8 @@ class Client
     }
 
     /**
-     * @param  array  $args
+     * @param  array $args
+     *
      * @return string
      */
     protected function arrayToArgsString($args)
@@ -143,6 +147,7 @@ class Client
 
     /**
      * @param  string $output
+     *
      * @return string
      * @throws PaymentRequestException
      */
@@ -165,6 +170,7 @@ class Client
 
     /**
      * @param  string $output the raw response
+     *
      * @return array
      */
     protected function handleResponseOutput($output)
@@ -211,7 +217,7 @@ class Client
             $result['score_info'],
             $result['score_threshold'],
             $result['score_profile']
-        ) = array_merge(explode('!', trim($output, '!')), array_fill(0, 40, ''));
+            ) = array_merge(explode('!', trim($output, '!')), array_fill(0, 40, ''));
 
         return $result;
     }

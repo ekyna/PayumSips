@@ -10,7 +10,7 @@ use Payum\Core\Request\GetHttpRequest;
 /**
  * Class CallResponseAction
  * @package Ekyna\Component\Payum\Sips\Action\Api
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CallResponseAction extends BaseApiAction
 {
@@ -39,9 +39,7 @@ class CallResponseAction extends BaseApiAction
      */
     public function supports($request)
     {
-        return
-            $request instanceof CallResponse &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+        return $request instanceof CallResponse
+            && $request->getModel() instanceof \ArrayAccess;
     }
 }

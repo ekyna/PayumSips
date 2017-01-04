@@ -3,24 +3,29 @@
 namespace Ekyna\Component\Payum\Sips\Action\Api;
 
 use Ekyna\Component\Payum\Sips\Api\Api;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\UnsupportedApiException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 
 /**
  * Class BaseApiAction
  * @package Ekyna\Component\Payum\Sips\Action\Api
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-abstract class BaseApiAction extends GatewayAwareAction implements ApiAwareInterface
+abstract class BaseApiAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * @var Api
      */
     protected $api;
 
+
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function setApi($api)
     {

@@ -2,10 +2,12 @@
 
 namespace Ekyna\Component\Payum\Sips\Action;
 
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Exception\RuntimeException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
@@ -13,10 +15,12 @@ use Payum\Core\Request\GetCurrency;
 /**
  * Class ConvertPaymentAction
  * @package Ekyna\Component\Payum\Sips\Action
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class ConvertPaymentAction extends GatewayAwareAction
+class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * {@inheritDoc}
      *
@@ -54,7 +58,7 @@ class ConvertPaymentAction extends GatewayAwareAction
             $model['customer_email'] = $payment->getClientEmail();
         }
 
-        $request->setResult((array) $model);
+        $request->setResult((array)$model);
     }
 
     /**
@@ -62,10 +66,8 @@ class ConvertPaymentAction extends GatewayAwareAction
      */
     public function supports($request)
     {
-        return
-            $request instanceof Convert &&
-            $request->getSource() instanceof PaymentInterface &&
-            $request->getTo() == 'array'
-        ;
+        return $request instanceof Convert
+            && $request->getSource() instanceof PaymentInterface
+            && $request->getTo() == 'array';
     }
 }

@@ -10,7 +10,7 @@ use Payum\Core\Request\GetStatusInterface;
 /**
  * Class StatusAction
  * @package Ekyna\Component\Payum\Sips\Action
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class StatusAction implements ActionInterface
 {
@@ -27,6 +27,7 @@ class StatusAction implements ActionInterface
 
         if (false == $model['transaction_id']) {
             $request->markNew();
+
             return;
         }
 
@@ -34,15 +35,18 @@ class StatusAction implements ActionInterface
             // Success
             if ('00' === $responseCode) {
                 $request->markCaptured();
+
                 return;
             }
             // Cancelled by user
             if ('17' === $responseCode) {
                 $request->markCanceled();
+
                 return;
             }
             // Failure
             $request->markFailed();
+
             return;
         }
 
@@ -54,9 +58,7 @@ class StatusAction implements ActionInterface
      */
     public function supports($request)
     {
-        return
-            $request instanceof GetStatusInterface &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+        return $request instanceof GetStatusInterface
+            && $request->getModel() instanceof \ArrayAccess;
     }
 }

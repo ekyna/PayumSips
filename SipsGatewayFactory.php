@@ -2,94 +2,69 @@
 
 namespace Ekyna\Component\Payum\Sips;
 
-use Ekyna\Component\Payum\Sips\Action\Api\CallRequestAction;
-use Ekyna\Component\Payum\Sips\Action\Api\CallResponseAction;
-use Ekyna\Component\Payum\Sips\Action\CaptureAction;
-use Ekyna\Component\Payum\Sips\Action\ConvertPaymentAction;
-use Ekyna\Component\Payum\Sips\Action\StatusAction;
-use Ekyna\Component\Payum\Sips\Action\SyncAction;
+use Ekyna\Component\Payum\Sips\Action;
 use Ekyna\Component\Payum\Sips\Api\Api;
 use Ekyna\Component\Payum\Sips\Client\Client;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\GatewayFactory as CoreGatewayFactory;
+use Payum\Core\GatewayFactory;
 use Payum\Core\GatewayFactoryInterface;
 
 /**
  * Class SipsGatewayFactory
  * @package Ekyna\Component\Payum\Sips
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class SipsGatewayFactory implements GatewayFactoryInterface
+class SipsGatewayFactory extends GatewayFactory
 {
     /**
-     * @var GatewayFactoryInterface
-     */
-    protected $coreGatewayFactory;
-
-    /**
-     * @var array
-     */
-    private $defaultConfig;
-
-
-    /**
-     * @param array $defaultConfig
+     * Builds a new factory.
+     *
+     * @param array                   $defaultConfig
      * @param GatewayFactoryInterface $coreGatewayFactory
+     *
+     * @return SipsGatewayFactory
      */
-    public function __construct(array $defaultConfig = array(), GatewayFactoryInterface $coreGatewayFactory = null)
+    public static function build(array $defaultConfig, GatewayFactoryInterface $coreGatewayFactory = null)
     {
-        $this->coreGatewayFactory = $coreGatewayFactory ?: new CoreGatewayFactory();
-        $this->defaultConfig = $defaultConfig;
+        return new static($defaultConfig, $coreGatewayFactory);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function create(array $config = array())
+    protected function populateConfig(ArrayObject $config)
     {
-        return $this->coreGatewayFactory->create($this->createConfig($config));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function createConfig(array $config = array())
-    {
-        $config = ArrayObject::ensureArrayObject($config);
-        $config->defaults($this->defaultConfig);
-        $config->defaults($this->coreGatewayFactory->createConfig((array) $config));
-
         $template = false != $config['payum.template.capture']
             ? $config['payum.template.capture']
-            : '@PayumSips/Action/capture.html.twig';
+            : '@EkynaPayumSips/Action/capture.html.twig';
 
         $apiConfig = false != $config['payum.api_config']
-            ? (array) $config['payum.api_config']
-            : array();
+            ? (array)$config['payum.api_config']
+            : [];
 
-        $config->defaults(array(
-            'payum.factory_name'  => 'Atos SIPS',
+        $config->defaults([
+            'payum.factory_name'  => 'atos_sips',
             'payum.factory_title' => 'Atos SIPS',
 
-            'payum.action.capture'         => new CaptureAction(),
-            'payum.action.convert_payment' => new ConvertPaymentAction(),
-            'payum.action.call_request'    => new CallRequestAction($template),
-            'payum.action.call_response'   => new CallResponseAction(),
-            'payum.action.sync'            => new SyncAction(),
-            'payum.action.status'          => new StatusAction(),
-        ));
+            'payum.action.capture'         => new Action\CaptureAction(),
+            'payum.action.convert_payment' => new Action\ConvertPaymentAction(),
+            'payum.action.call_request'    => new Action\Api\CallRequestAction($template),
+            'payum.action.call_response'   => new Action\Api\CallResponseAction(),
+            'payum.action.sync'            => new Action\SyncAction(),
+            'payum.action.status'          => new Action\StatusAction(),
+        ]);
 
-        $defaultOptions  = array();
-        $requiredOptions = array();
+        $defaultOptions = [];
+        $requiredOptions = [];
 
         if (false == $config['payum.client']) {
-            $defaultOptions['client'] = array(
+            $defaultOptions['client'] = [
                 'merchant_id'      => null,
                 'merchant_country' => 'fr',
                 'pathfile'         => null,
                 'request_bin'      => null,
                 'response_bin'     => null,
-            );
+            ];
 
             $requiredOptions[] = 'client';
 
@@ -101,7 +76,7 @@ class SipsGatewayFactory implements GatewayFactoryInterface
         }
 
         if (false == $config['payum.api']) {
-            $defaultOptions['api'] = array_replace(array(
+            $defaultOptions['api'] = array_replace([
                 'language'           => null,
                 'payment_means'      => null,
                 'header_flag'        => null,
@@ -117,7 +92,7 @@ class SipsGatewayFactory implements GatewayFactoryInterface
                 'advert'             => null,
                 'background_id'      => null,
                 'templatefile'       => null,
-            ), $apiConfig);
+            ], $apiConfig);
 
             $requiredOptions[] = 'api';
 
@@ -132,10 +107,9 @@ class SipsGatewayFactory implements GatewayFactoryInterface
             };
         }
 
-        $config['payum.default_options']  = $defaultOptions;
+        $config['payum.default_options'] = $defaultOptions;
         $config['payum.required_options'] = $requiredOptions;
-        $config->defaults($config['payum.default_options']);
 
-        return (array) $config;
+        $config->defaults($config['payum.default_options']);
     }
 }

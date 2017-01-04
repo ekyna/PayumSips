@@ -11,7 +11,7 @@ use Payum\Core\Request\RenderTemplate;
 /**
  * Class CallRequestAction
  * @package Ekyna\Component\Payum\Sips\Action\Api
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CallRequestAction extends BaseApiAction
 {
@@ -47,9 +47,9 @@ class CallRequestAction extends BaseApiAction
 
         $model['transaction_id'] = date('His'); // TODO store and increment in a file
 
-        $renderTemplate = new RenderTemplate($this->templateName, array(
+        $renderTemplate = new RenderTemplate($this->templateName, [
             'form' => $this->api->request($model->getArrayCopy()),
-        ));
+        ]);
 
         $this->gateway->execute($renderTemplate);
 
@@ -61,9 +61,7 @@ class CallRequestAction extends BaseApiAction
      */
     public function supports($request)
     {
-        return
-            $request instanceof CallRequest &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+        return $request instanceof CallRequest
+            && $request->getModel() instanceof \ArrayAccess;
     }
 }

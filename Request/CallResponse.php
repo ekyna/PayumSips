@@ -7,7 +7,7 @@ use Payum\Core\Request\Generic;
 /**
  * Class CallResponse
  * @package Ekyna\Component\Payum\Sips\Request
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CallResponse extends Generic
 {

@@ -3,40 +3,26 @@
 namespace Ekyna\Component\Payum\Sips\Action;
 
 use Ekyna\Component\Payum\Sips\Request\CallRequest;
-use Ekyna\Component\Payum\Sips\Request\CallResponse;
-use Ekyna\Component\Payum\Sips\Step;
-use Payum\Core\Action\GatewayAwareAction;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
-use Payum\Core\Security\GenericTokenFactoryInterface;
+use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 
 /**
  * Class CaptureAction
  * @package Ekyna\Component\Payum\Sips\Action
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
-class CaptureAction extends GatewayAwareAction implements GenericTokenFactoryAwareInterface
+class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
-
-    /**
-     * @var GenericTokenFactoryInterface
-     */
-    protected $tokenFactory;
-
-
-    /**
-     * @param GenericTokenFactoryInterface $genericTokenFactory
-     *
-     * @return void
-     */
-    public function setGenericTokenFactory(GenericTokenFactoryInterface $genericTokenFactory = null)
-    {
-        $this->tokenFactory = $genericTokenFactory;
-    }
+    use GatewayAwareTrait;
+    use GenericTokenFactoryAwareTrait;
 
     /**
      * {@inheritdoc}
@@ -78,9 +64,7 @@ class CaptureAction extends GatewayAwareAction implements GenericTokenFactoryAwa
      */
     public function supports($request)
     {
-        return
-            $request instanceof Capture &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+        return $request instanceof Capture
+            && $request->getModel() instanceof \ArrayAccess;
     }
 }

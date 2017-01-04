@@ -7,7 +7,7 @@ use Ekyna\Component\Payum\Sips\Client\Client;
 /**
  * Class Api
  * @package Ekyna\Component\Payum\Sips\Api
- * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class Api
 {
@@ -42,6 +42,7 @@ class Api
      * and returns the generated form.
      *
      * @param array $data
+     *
      * @return string
      */
     public function request(array $data)
@@ -55,6 +56,7 @@ class Api
      * Runs the response binary and returns the new data.
      *
      * @param string $hash
+     *
      * @return array
      */
     public function response($hash)
