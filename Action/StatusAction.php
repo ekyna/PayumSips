@@ -38,7 +38,7 @@ class StatusAction implements ActionInterface
 
                 return;
             }
-            // Cancelled by user
+            // Canceled by user
             if ('17' === $responseCode) {
                 $request->markCanceled();
 

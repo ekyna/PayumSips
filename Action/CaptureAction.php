@@ -26,6 +26,8 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
     /**
      * {@inheritdoc}
+     *
+     * @param Capture $request
      */
     public function execute($request)
     {
