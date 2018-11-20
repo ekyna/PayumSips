@@ -8,8 +8,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetStatusInterface;
 
 /**
- * Class StatusAction
- * @package Ekyna\Component\Payum\Sips\Action
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class StatusAction implements ActionInterface

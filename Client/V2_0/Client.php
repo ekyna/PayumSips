@@ -1,6 +1,6 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Client;
+namespace Ekyna\Component\Payum\Sips\Client\V2_0;
 
 use Ekyna\Component\Payum\Sips\Exception\PaymentRequestException;
 use Payum\Core\Exception\InvalidArgumentException;
@@ -9,22 +9,19 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Process\Process;
 
 /**
- * Class Client
- * @package Ekyna\Component\Payum\Sips\Client
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author  Grégory Planchat <grégory@kiboko.fr>
  */
 class Client
 {
     /**
      * @var array
      */
-    protected $config;
+    private $config;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
-
+    private $logger;
 
     /**
      * Constructor
@@ -48,14 +45,8 @@ class Client
         if (empty($this->config['merchant_country'])) {
             throw new InvalidArgumentException('The merchant_country option must be set.');
         }
-        if (empty($this->config['pathfile'])) {
-            throw new InvalidArgumentException('The pathfile option must be set.');
-        }
-        if (empty($this->config['request_bin'])) {
-            throw new InvalidArgumentException('The request_bin option must be set.');
-        }
-        if (empty($this->config['response_bin'])) {
-            throw new InvalidArgumentException('The response_bin option must be set.');
+        if (empty($this->config['secret_key'])) {
+            throw new InvalidArgumentException('The secret_key option must be set.');
         }
 
         $this->logger = $logger ?: new NullLogger();
@@ -66,12 +57,12 @@ class Client
      *
      * @return string
      */
-    public function callRequest($config)
+    public function callRequest(array $config)
     {
         $args = array_replace([
             'merchant_id'      => $this->config['merchant_id'],
             'merchant_country' => $this->config['merchant_country'],
-            'pathfile'         => $this->config['pathfile'],
+            'secret_key'       => $this->config['secret_key'],
         ], $config);
 
         $output = $this->run($this->config['request_bin'], $args);
@@ -87,8 +78,8 @@ class Client
     public function callResponse($data)
     {
         $args = [
-            'message'  => $data,
-            'pathfile' => $this->config['pathfile'],
+            'message'    => $data,
+            'secret_key' => $this->config['secret_key'],
         ];
 
         $output = $this->run($this->config['response_bin'], $args);

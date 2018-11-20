@@ -13,8 +13,6 @@ use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
 
 /**
- * Class ConvertPaymentAction
- * @package Ekyna\Component\Payum\Sips\Action
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface

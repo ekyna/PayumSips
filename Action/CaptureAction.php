@@ -15,8 +15,6 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 
 /**
- * Class CaptureAction
- * @package Ekyna\Component\Payum\Sips\Action
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface

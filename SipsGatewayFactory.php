@@ -4,14 +4,13 @@ namespace Ekyna\Component\Payum\Sips;
 
 use Ekyna\Component\Payum\Sips\Action;
 use Ekyna\Component\Payum\Sips\Api\Api;
-use Ekyna\Component\Payum\Sips\Client\Client;
+use Ekyna\Component\Payum\Sips\Client\ClientInterface;
+use Ekyna\Component\Payum\Sips\Client\V1_0\Client;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
 use Payum\Core\GatewayFactoryInterface;
 
 /**
- * Class SipsGatewayFactory
- * @package Ekyna\Component\Payum\Sips
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class SipsGatewayFactory extends GatewayFactory

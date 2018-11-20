@@ -1,7 +1,10 @@
 PayumSips
 ===============
 
-Ato Sips Payum Gateway
+Payum adapter for Atos SIPS Gateway
 
-## Installation / Configuration
-TODO
+Installation / Configuration
+----------------------------
+
+
+

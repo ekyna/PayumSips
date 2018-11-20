@@ -8,8 +8,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetHttpRequest;
 
 /**
- * Class CallResponseAction
- * @package Ekyna\Component\Payum\Sips\Action\Api
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CallResponseAction extends BaseApiAction

@@ -2,12 +2,11 @@
 
 namespace Ekyna\Component\Payum\Sips\Api;
 
-use Ekyna\Component\Payum\Sips\Client\Client;
+use Ekyna\Component\Payum\Sips\Client\ClientInterface;
 
 /**
- * Class Api
- * @package Ekyna\Component\Payum\Sips\Api
  * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author  Grégory Planchat <grégory@kiboko.fr>
  */
 class Api
 {
@@ -17,18 +16,15 @@ class Api
     private $config;
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
 
-
     /**
-     * Constructor.
-     *
-     * @param array  $config
-     * @param Client $client
+     * @param array           $config
+     * @param ClientInterface $client
      */
-    public function __construct(array $config, Client $client)
+    public function __construct(array $config, ClientInterface $client)
     {
         $this->config = array_filter($config, function ($value) {
             return null !== $value;
@@ -45,11 +41,11 @@ class Api
      *
      * @return string
      */
-    public function request(array $data)
+    public function request(array $data): string
     {
         $data = array_replace($this->config, $data);
 
-        return $this->client->callRequest($data);
+        return $this->client->sendRequest($data);
     }
 
     /**
@@ -59,8 +55,8 @@ class Api
      *
      * @return array
      */
-    public function response($hash)
+    public function response(string $hash): array
     {
-        return $this->client->callResponse($hash);
+        return $this->client->sendResponse($hash);
     }
 }

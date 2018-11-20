@@ -12,7 +12,7 @@
         "MIT"
     ],
     "require" : {
-        "php" : ">=5.4",
+        "php" : ">=7.1",
         "payum/core": "^1.5",
         "php-http/guzzle6-adapter": "^1.1",
         "symfony/process": "~2.7|~3.0",

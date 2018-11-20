@@ -6,8 +6,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Class TwigPathCompilerPass
- * @package Ekyna\Component\Payum\Sips\Bridge\Symfony\DependencyInjection
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class TwigPathCompilerPass implements CompilerPassInterface

@@ -9,8 +9,6 @@ use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 
 /**
- * Class CallRequestAction
- * @package Ekyna\Component\Payum\Sips\Action\Api
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class CallRequestAction extends BaseApiAction

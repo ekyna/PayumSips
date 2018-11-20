@@ -3,15 +3,13 @@
 namespace Ekyna\Component\Payum\Sips\Tests\Client;
 
 /**
- * Class ClientTest
- * @package Ekyna\Component\Payum\Sips\Tests\Client
  * @author  Hubert Moutot <hubert.moutot@gmail.com>
  * @author  Étienne Dauvergne <contact@ekyna.com>
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Ekyna\Component\Payum\Sips\Client\Client|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Ekyna\Component\Payum\Sips\Client\SipsV1|\PHPUnit_Framework_MockObject_MockObject
      */
     private $client;
 
@@ -31,7 +29,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->client = $this
-            ->getMockBuilder('Ekyna\Component\Payum\Sips\Client\Client')
+            ->getMockBuilder('Ekyna\Component\Payum\Sips\Client\SipsV1')
             ->setConstructorArgs([$config, $logger])
             ->setMethods(['run'])
             ->getMock();
