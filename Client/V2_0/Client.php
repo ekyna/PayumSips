@@ -9,7 +9,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Process\Process;
 
 /**
- * @author  Grégory Planchat <grégory@kiboko.fr>
+ * @author Grégory Planchat <grégory@kiboko.fr>
  */
 class Client
 {

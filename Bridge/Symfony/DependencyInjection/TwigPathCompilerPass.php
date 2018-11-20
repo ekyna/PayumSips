@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class TwigPathCompilerPass implements CompilerPassInterface
 {

@@ -13,7 +13,7 @@ use Payum\Core\Request\Convert;
 use Payum\Core\Request\GetCurrency;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class ConvertPaymentAction implements ActionInterface, GatewayAwareInterface
 {

@@ -8,7 +8,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetHttpRequest;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class CallResponseAction extends BaseApiAction
 {

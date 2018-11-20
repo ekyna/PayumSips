@@ -11,7 +11,7 @@ use Payum\Core\GatewayFactory;
 use Payum\Core\GatewayFactoryInterface;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class SipsGatewayFactory extends GatewayFactory
 {

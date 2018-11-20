@@ -9,20 +9,20 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Process\Process;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author Grégory Planchat <grégory@kiboko.fr>
  */
 class Client
 {
     /**
      * @var array
      */
-    protected $config;
+    private $config;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
-
+    private $logger;
 
     /**
      * Constructor

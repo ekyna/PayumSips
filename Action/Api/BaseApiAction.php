@@ -10,7 +10,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 abstract class BaseApiAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {

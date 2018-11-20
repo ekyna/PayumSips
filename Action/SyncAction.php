@@ -11,7 +11,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Sync;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class SyncAction implements ActionInterface, GatewayAwareInterface
 {

@@ -9,7 +9,7 @@ use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class CallRequestAction extends BaseApiAction
 {

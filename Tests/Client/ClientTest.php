@@ -4,7 +4,7 @@ namespace Ekyna\Component\Payum\Sips\Tests\Client;
 
 /**
  * @author  Hubert Moutot <hubert.moutot@gmail.com>
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {

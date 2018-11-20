@@ -11,7 +11,7 @@ use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
+ * @author Étienne Dauvergne <contact@ekyna.com>
  */
 class NotifyAction implements ActionInterface, GatewayAwareInterface
 {

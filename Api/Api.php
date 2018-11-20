@@ -5,8 +5,8 @@ namespace Ekyna\Component\Payum\Sips\Api;
 use Ekyna\Component\Payum\Sips\Client\ClientInterface;
 
 /**
- * @author  Étienne Dauvergne <contact@ekyna.com>
- * @author  Grégory Planchat <grégory@kiboko.fr>
+ * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author Grégory Planchat <grégory@kiboko.fr>
  */
 class Api
 {
