@@ -1,10 +1,13 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Client;
+namespace Kiboko\Component\Payum\Sips\Client;
 
+/**
+ * @author Grégory Planchat <gregory@kiboko.fr>
+ */
 interface ClientInterface
 {
-    public function sendRequest(array $config): array;
+    public function requestPayment(RequestInterface $config): RedirectionInterface;
 
-    public function sendResponse(array $config): array;
+    public function handlePaymentResponse(string $response, string $hash): ResponseInterface;
 }

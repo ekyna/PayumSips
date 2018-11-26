@@ -1,35 +1,32 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Api;
+namespace Kiboko\Component\Payum\Sips\Api;
 
-use Ekyna\Component\Payum\Sips\Client\ClientInterface;
+use Kiboko\Component\Payum\Sips\Client\ClientInterface;
+use Kiboko\Component\Payum\Sips\Client\RedirectionInterface;
+use Kiboko\Component\Payum\Sips\Client\Request;
+use Kiboko\Component\Payum\Sips\Client\RequestInterface;
+use Kiboko\Component\Payum\Sips\Client\Response;
+use Kiboko\Component\Payum\Sips\Client\ResponseInterface;
+use Kiboko\Component\Payum\Sips\Exception\PaymentRequestException;
+use Kiboko\Component\Payum\Sips\Exception\PaymentResponseException;
 
 /**
  * @author Étienne Dauvergne <contact@ekyna.com>
- * @author Grégory Planchat <grégory@kiboko.fr>
+ * @author Grégory Planchat <gregory@kiboko.fr>
  */
 class Api
 {
-    /**
-     * @var array
-     */
-    private $config;
-
     /**
      * @var ClientInterface
      */
     private $client;
 
     /**
-     * @param array           $config
      * @param ClientInterface $client
      */
-    public function __construct(array $config, ClientInterface $client)
+    public function __construct(ClientInterface $client)
     {
-        $this->config = array_filter($config, function ($value) {
-            return null !== $value;
-        });
-
         $this->client = $client;
     }
 
@@ -37,26 +34,37 @@ class Api
      * Runs the request binary with given data
      * and returns the generated form.
      *
-     * @param array $data
+     * @param RequestInterface $request
      *
-     * @return string
+     * @return RedirectionInterface
+     *
+     * @throws \RuntimeException
      */
-    public function request(array $data): string
+    public function request(RequestInterface $request): RedirectionInterface
     {
-        $data = array_replace($this->config, $data);
-
-        return $this->client->sendRequest($data);
+        try {
+            return $this->client->requestPayment($request);
+        } catch (PaymentRequestException $e) {
+            throw new \RuntimeException(null, null, $e);
+        }
     }
 
     /**
      * Runs the response binary and returns the new data.
      *
+     * @param string $data
      * @param string $hash
      *
-     * @return array
+     * @return Response
+     *
+     * @throws \RuntimeException
      */
-    public function response(string $hash): array
+    public function response(string $data, string $hash): ResponseInterface
     {
-        return $this->client->sendResponse($hash);
+        try {
+            return $this->client->handlePaymentResponse($data, $hash);
+        } catch (PaymentResponseException $e) {
+            throw new \RuntimeException(null, null, $e);
+        }
     }
 }

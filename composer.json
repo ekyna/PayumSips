@@ -19,14 +19,21 @@
     ],
     "require": {
         "php": ">=7.1",
+        "ext-json": "*",
         "payum/core": "^1.5",
+        "psr/log": "~1.0",
         "php-http/guzzle6-adapter": "^1.1",
-        "symfony/process": "~2.7|~3.0",
-        "psr/log": "~1.0"
+        "symfony/process": "~3.4|~4.0",
+        "symfony/validator": "~3.4|~4.0",
+        "symfony/yaml": "~3.4|~4.0",
+        "symfony/intl": "~3.4|~4.0"
     },
     "autoload": {
         "psr-4": {
-            "Ekyna\\Component\\Payum\\Sips\\": ""
+            "Kiboko\\Component\\Payum\\Sips\\": ""
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.4"
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Action;
+namespace Kiboko\Component\Payum\Sips\Action;
 
-use Ekyna\Component\Payum\Sips\Request\CallRequest;
+use Kiboko\Component\Payum\Sips\Request\CallRequest;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;

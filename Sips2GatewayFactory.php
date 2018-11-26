@@ -11,8 +11,9 @@ use Payum\Core\GatewayFactoryInterface;
 
 /**
  * @author Étienne Dauvergne <contact@ekyna.com>
+ * @author Grégory Planchat <gregory@kiboko.fr>
  */
-class SipsGatewayFactory extends GatewayFactory
+class Sips2GatewayFactory extends GatewayFactory
 {
     /**
      * Builds a new factory.
@@ -20,7 +21,7 @@ class SipsGatewayFactory extends GatewayFactory
      * @param array                   $defaultConfig
      * @param GatewayFactoryInterface $coreGatewayFactory
      *
-     * @return SipsGatewayFactory
+     * @return Sips2GatewayFactory
      */
     public static function build(array $defaultConfig, GatewayFactoryInterface $coreGatewayFactory = null)
     {
@@ -41,8 +42,8 @@ class SipsGatewayFactory extends GatewayFactory
             : [];
 
         $config->defaults([
-            'payum.factory_name'  => 'atos_sips',
-            'payum.factory_title' => 'Atos SIPS 1.0',
+            'payum.factory_name'  => 'atos_sips2',
+            'payum.factory_title' => 'Atos SIPS 2.0',
 
             'payum.action.capture'         => new Action\CaptureAction(),
             'payum.action.convert_payment' => new Action\ConvertPaymentAction(),
@@ -59,7 +60,7 @@ class SipsGatewayFactory extends GatewayFactory
             $defaultOptions['client'] = [
                 'merchant_id'      => null,
                 'merchant_country' => 'fr',
-                'pathfile'         => null,
+                'secret_key'       => null,
                 'request_bin'      => null,
                 'response_bin'     => null,
             ];

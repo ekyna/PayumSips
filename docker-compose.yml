@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  http:
+    image: nginx:alpine
+    volumes:
+      - ./.docker/nginx@1.15/config/options.conf:/etc/nginx/conf.d/000-options.conf
+      - ./:/var/www/html
+    restart: on-failure
+
+  fpm:
+    build:
+      context: .docker/php@7.1/fpm
+    user: docker:docker
+    volumes:
+      - ./.docker/php@7.1/fpm/config/pool.ini:/usr/local/etc/php/pool.d/default.ini:ro
+      - ./.docker/php@7.1/fpm/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
+      - ./:/var/www/html
+    restart: on-failure
+
+  cli:
+    build:
+      context: .docker/php@7.1/cli
+    user: docker:docker
+    volumes:
+      - ./.docker/php@7.1/cli/config/memory.ini:/usr/local/etc/php/conf.d/memory.ini:ro
+      - ./:/var/www/html

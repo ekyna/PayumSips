@@ -1,6 +1,6 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Request;
+namespace Kiboko\Component\Payum\Sips\Request;
 
 use Payum\Core\Request\Generic;
 

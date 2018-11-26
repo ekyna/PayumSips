@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  http:
+    ports:
+      - 1307:80
+    volumes:
+      - ./.docker/nginx@1.15/config/vhost-prod.conf:/etc/nginx/conf.d/100-default.conf

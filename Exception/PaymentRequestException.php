@@ -1,6 +1,6 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Exception;
+namespace Kiboko\Component\Payum\Sips\Exception;
 
 use Payum\Core\Exception\ExceptionInterface;
 

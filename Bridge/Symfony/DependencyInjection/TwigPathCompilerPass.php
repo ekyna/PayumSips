@@ -1,6 +1,6 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Bridge\Symfony\DependencyInjection;
+namespace Kiboko\Component\Payum\Sips\Bridge\Symfony\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

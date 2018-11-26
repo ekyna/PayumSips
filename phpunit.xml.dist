@@ -7,8 +7,8 @@
          bootstrap="./Tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="Payum Sips Test Suite">
-            <directory>./Tests</directory>
+        <testsuite name="Payum Sips Unit Tests Suite">
+            <directory>./tests/unit</directory>
         </testsuite>
     </testsuites>
 
@@ -16,7 +16,7 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./Tests</directory>
+                <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>

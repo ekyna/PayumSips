@@ -1,0 +1,87 @@
+Kiboko\Component\Payum\Sips\Client\Configuration:
+  properties:
+    merchantId:
+      - Type: 'string'
+      - NotBlank: ~
+
+    gatewayUrl:
+      - Type: 'string'
+      - NotBlank: ~
+
+    secretKey:
+      - Type: 'string'
+      - NotBlank: ~
+
+    keyVersion:
+      - Type: 'int'
+      - NotBlank: ~
+
+    sealAlgorithm:
+      - Type: 'string'
+      - Choice:
+          choices: [ 'HMAC-SHA-256' ]
+        
+Kiboko\Component\Payum\Sips\Client\Request:
+  properties:
+    amount:
+      - Type: 'numeric'
+      - NotBlank: ~
+
+    currencyCode:
+      - Currency: ~
+
+    interfaceVersion:
+      - Type: 'string'
+      - NotBlank: ~
+
+    normalReturnUrl:
+      - Url: ~
+      - NotBlank: ~
+
+    transactionReference:
+      - Type: 'string'
+      - NotBlank: ~
+
+    orderChannel:
+      - Type: 'string'
+      - NotBlank: ~
+  
+Kiboko\Component\Payum\Sips\Client\Redirection:
+    redirectionData:
+      - Optional:
+          constraints:
+            - NotBlank: ~
+            - Type: 'string'
+
+    redirectionStatusCode:
+      - Type: 'string'
+      - Regex: '/^[0-9a-f]+$/i'
+      - Choice:
+          choices: [ '00', '03', '12', '30', '34', '94', '99' ]
+
+    redirectionStatusMessage:
+      - Optional:
+          constraints:
+            - NotBlank: ~
+            - Type: 'string'
+
+    redirectionUrl:
+      - Optional:
+          constraints:
+            - NotBlank: ~
+            - Type: 'string'
+
+    redirectionVersion:
+      - Type: 'string'
+      - EqualTo: 'IR_WS_2.0'
+
+    seal:
+      - Optional:
+          constraints:
+            - Type: 'string'
+            - Regex: '/^[0-9a-f]+$/i'
+
+    reponseEncoding:
+      - Optional:
+          constraints:
+            - Type: 'string'

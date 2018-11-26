@@ -1,8 +1,8 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Action\Api;
+namespace Kiboko\Component\Payum\Sips\Action\Api;
 
-use Ekyna\Component\Payum\Sips\Api\Api;
+use Kiboko\Component\Payum\Sips\Api\Api;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\UnsupportedApiException;

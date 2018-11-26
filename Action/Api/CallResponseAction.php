@@ -1,8 +1,8 @@
 <?php
 
-namespace Ekyna\Component\Payum\Sips\Action\Api;
+namespace Kiboko\Component\Payum\Sips\Action\Api;
 
-use Ekyna\Component\Payum\Sips\Request\CallResponse;
+use Kiboko\Component\Payum\Sips\Request\CallResponse;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetHttpRequest;
